@@ -1,9 +1,9 @@
 import psycopg2
 import sys
-import customer_functions as cf
-import restaurant_functions as rf
-import other_functions as of
-import admin_functions as af
+import functions.customer_functions as cf
+import functions.restaurant_functions as rf
+import functions.other_functions as of
+import functions.admin_functions as af
 
 def heading(str):
     print('-'*60)
@@ -26,19 +26,18 @@ def print_rows(rows):
 2. cancel reservation
 3. check available hours
 4. filter restaurants by cuisines or reviews
+5. join waitlists
 
 --- restaurant functions
-5. notify customers for waitlist
-6. check when available for next duration
-7. seasonal recommendations
+6. seasonal recommendations
 
 --- other user functions
-8. change basic info
+7. change basic info
 
 --- admin functions
-9. recommend loyal customers
-10. find restaurants with highest 1 star percentage reviews
-11. what cuisine gets most reservations
+8. recommend loyal customers
+9. find restaurants with highest 1 star percentage reviews
+10. what cuisine gets most reservations
 
 Choose (1-11, 0 to quit): '''
 
@@ -51,32 +50,29 @@ def make_reservation(p_customer_id, p_restaurant_id, p_date, p_time, p_seats, p_
 def cancel_reservation(p_customer_id, p_restaurant_id) :
     cf.cancel_reservation(p_customer_id, p_restaurant_id)
 
-def check_available_hours() :
-    pass
+def check_available_hours(p_restaurant_id) :
+    cf.check_available_hours(p_restaurant_id)
 
-def filter_restaurants() :
-    pass
+def filter_restaurants(filter_type, filter_value, order, limit) :
+    cf.filter_restaurants(filter_type, filter_value, order, limit)
 
-def add_to_waitlist() :
-    pass
+def join_waitlist(p_customer_id, p_restaurant_id, p_date, p_time, p_seats) :
+    cf.join_waitlist(p_customer_id, p_restaurant_id, p_date, p_time, p_seats)
 
-def check_special_occasion() :
-    pass
+def rank_seasons(p_restaurant_id) :
+    rf.rank_seasons(p_restaurant_id)
 
-def recommend_seasonals() :
-    pass
+def update_user_info(user_id, edits) :
+    of.update_user_info(user_id, edits)
 
-def update_user_info() :
-    pass
-
-def recommend_loyal_customers() :
-    pass
+def recommend_customers(user_id) :
+    af.recommend_customers(user_id)
 
 def rank_restaurants() :
-    pass
+    af.rank_restaurants()
 
 def rank_cuisines() :
-    pass
+    af.rank_cuisines()
 
 actions = {
 1: show_menu,
@@ -84,13 +80,12 @@ actions = {
 3: cancel_reservation,
 4: check_available_hours,
 5: filter_restaurants,
-6: add_to_waitlist,
-7: check_special_occasion,
-8: recommend_seasonals,
-9: update_user_info,
-10:recommend_loyal_customers,
-11: rank_restaurants,
-12: rank_cuisines}
+6: join_waitlist,
+7: rank_seasons,
+8: update_user_info,
+9: recommend_customers,
+10: rank_restaurants,
+11: rank_cuisines}
 
 
 if __name__ == '__main__':

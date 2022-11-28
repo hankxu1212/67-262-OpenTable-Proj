@@ -43,4 +43,7 @@ Choose (1-11, 0 to quit): '''
         if cur != None:
             cur.close() 
         if conn != None:
-            conn.close() 
+            conn.close()
+
+def update_user_info(user_id, edits) :
+    pass
