@@ -1,21 +1,41 @@
 user_id,name,email,phone
-1,Darcey Friedman,DarceyFriedman@123.com, 12341325
-2,Micheal Ali,MichealAli@123.com, 124523532
-3,Emma Ferrell,EmmaFerrell@123.com, 4335421235
-4,Mariyah Villa,MariyahVilla@123.com, 23456132
-5,Mya Gibson,MyaGibson@123.com, 234578235
-6,Aadam Page,AadamPage@123.com, 234718878
-7,Fintan Holt,FintanHolt@123.com, 134879610
-8,Colin Cooke,ColinCooke@123.com, 134778587
-9,Max Hines,MaxHines@123.com, 1457785686
-10,Conner Cantu,ConnerCantu@123.com, 143765826
-11,The Harlequin Taste,TheHarlequinTaste@restaurant.com,21423512316
-12,The Chili Shark,TheChiliShark@restaurant.com,5467823415
-13,The Rare Devil,TheRareDevil@restaurant.com,234567898
-14,The Dairy Tulip,TheDairyTulip@restaurant.com,8971234567
-15,The Sweet Fox,TheSweetFox@restaurant.com,231566346
-16,Whisperwind,Whisperwind@restaurant.com,5677612134
-17,Solo Mio,SoloMio@restaurant.com,34113441357
-18,The Cane,TheCane@restaurant.com,3567356476
-19,Interlude,Interlude@restaurant.com,756334645
-20,Ivy,Ivy@restaurant.com,91234812357
+1,John Doe,john@email.com,5555555555
+2,Jack Jones,jack@email.com,2222222222
+3,Ella Fitzgerald,ella@email.com,3333333333
+4,Jill Hopkins,jillh@email.com,4444444444
+5,Kacey Fuller,kacey@email.com,9998887777
+6,Fred Jackson,fredj@email.com,2322324444
+7,Belle Beaumont,belle@email.com,1231234567
+8,Hetty Lang,hlang@email.com,7675654444
+9,Sam Hanna,sam@email.com,9098987676
+10,Kenzie Blythe,kenzie@email.com,2324345555
+11,Pamela's,pamelas@email.com,2223334444
+12,Olive Garden,olivegarden@email.com,3334445555
+13,Red Robin,redrobin@email.com,4445556666
+14,Main Street Diner,@email.com,5557778888
+15,Red Lobster,redlobster@email.com,7778889999
+16,Buffalo Wild Wings,@email.com,9998887777
+17,Quaker Steak and Lube,@email.com,8887775555
+18,Primanti Bros.,primantibros@email.com,7775554444
+19,Eat'n Park,eat'npark@email.com,5554443333
+20,Hoss's,hosss@email.com,4443332222
+21,Darcey Friedman,DarceyFriedman@123.com, 12341325
+22,Micheal Ali,MichealAli@123.com, 124523532
+23,Emma Ferrell,EmmaFerrell@123.com, 4335421235
+24,Mariyah Villa,MariyahVilla@123.com, 23456132
+25,Mya Gibson,MyaGibson@123.com, 234578235
+26,Aadam Page,AadamPage@123.com, 234718878
+27,Fintan Holt,FintanHolt@123.com, 134879610
+28,Colin Cooke,ColinCooke@123.com, 134778587
+29,Max Hines,MaxHines@123.com, 1457785686
+30,Conner Cantu,ConnerCantu@123.com, 143765826
+31,The Harlequin Taste,TheHarlequinTaste@restaurant.com,21423512316
+32,The Chili Shark,TheChiliShark@restaurant.com,5467823415
+33,The Rare Devil,TheRareDevil@restaurant.com,234567898
+34,The Dairy Tulip,TheDairyTulip@restaurant.com,8971234567
+35,The Sweet Fox,TheSweetFox@restaurant.com,231566346
+36,Whisperwind,Whisperwind@restaurant.com,5677612134
+37,Solo Mio,SoloMio@restaurant.com,34113441357
+38,The Cane,TheCane@restaurant.com,3567356476
+39,Interlude,Interlude@restaurant.com,756334645
+40,Ivy,Ivy@restaurant.com,91234812340

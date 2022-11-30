@@ -16,14 +16,16 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
-def new_reservation():
+def new_reservation_menu():
     heading("new_reservation")
     date = input('Date: ')
     time = input('Time: ')
     seats = input('Seats: ')
+    info = input('Additional Information: ')
     cust_id = input('Customer_Id (1-10): ')
     rest_id = input('Restaurant_id (11-20): ')
-    make_reservation(date=date, time=time, seats=seats, cust_id=cust_id, rest_id=rest_id)
+    make_reservation(date=date, time=time, seats=seats, info=info, cust_id=cust_id, rest_id=rest_id)
+    show_all_reservations()
 
 def make_reservation(date, time, seats, info, cust_id, rest_id) :
     tmpl = '''
@@ -34,17 +36,19 @@ def make_reservation(date, time, seats, info, cust_id, rest_id) :
     print_cmd(cmd)
     cur.execute(cmd)
 
-def cancel_reservation(p_customer_id, p_restaurant_id):
-    pass
-
-def check_available_hours(p_restaurant_id) :
-    pass
-
-def filter_restaurants(filter_type, filter_value, order, limit) :
-    pass
-
-def join_waitlist(p_customer_id, p_restaurant_id, p_date, p_time, p_seats) :
-    pass
+def show_all_reservations() :
+    tmpl = '''
+        SELECT c.name, t.name, r.date, r.time
+          FROM Users as c 
+               JOIN Reservations as r ON c.user_id = r.customer_id
+               JOIN Users as t ON r.restaurant_id = t.user_id
+    '''
+    cmd = cur.mogrify(tmpl)
+    print_cmd(cmd)
+    cur.execute(cmd)
+    rows = cur.fetchall()
+    print_rows(rows)
+    print()
 
 if __name__ == '__main__':
     try:
@@ -62,6 +66,6 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
-        new_reservation()
+        new_reservation_menu()
     except psycopg2.Error as e:
         print("Unable to open connection: %s" % (e,))
