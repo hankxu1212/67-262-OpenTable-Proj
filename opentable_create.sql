@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-11-29 19:14:28.699
+-- Last modification date: 2022-11-30 02:42:26.34
 
 -- tables
 -- Table: Customers
@@ -14,7 +14,7 @@ CREATE TABLE Reservations (
     reserve_id serial  NOT NULL,
     date date  NOT NULL,
     time time  NOT NULL,
-    seats text  NOT NULL,
+    seats int  NOT NULL,
     additional_requests text  NOT NULL,
     customer_id int  NOT NULL,
     restaurant_id int  NOT NULL,
