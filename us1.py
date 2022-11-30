@@ -17,13 +17,13 @@ def print_rows(rows):
         print(row)
 
 def new_reservation_menu():
-    heading("new_reservation")
-    date = input('Date: ')
-    time = input('Time: ')
-    seats = input('Number of Seats: ')
-    info = input('Additional Information: ')
-    cust_id = input('Customer_Id (1-10): ')
-    rest_id = input('Restaurant_id (11-20): ')
+    heading("New_Reservation")
+    date = input('Date (e.g. 2023-02-12): ')
+    time = input('Time (e.g. 14:00): ')
+    seats = input('Number of Seats (e.g. 3): ')
+    info = input('Additional Information: (e.g. Anniversary)')
+    cust_id = input('Customer_Id (e.g. 4): ')
+    rest_id = input('Restaurant_id (e.g. 12): ')
     make_reservation(date=date, time=time, seats=seats, info=info, cust_id=cust_id, rest_id=rest_id)
     show_all_reservations()
 
@@ -38,7 +38,7 @@ def make_reservation(date, time, seats, info, cust_id, rest_id) :
 
 def show_all_reservations() :
     tmpl = '''
-        SELECT c.name, t.name, r.date, r.time
+        SELECT c.name, t.name, r.date, r.time, r.seats, r.additional_requests
           FROM Users as c 
                JOIN Reservations as r ON c.user_id = r.customer_id
                JOIN Users as t ON r.restaurant_id = t.user_id
@@ -52,17 +52,11 @@ def show_all_reservations() :
 
 if __name__ == '__main__':
     try:
-        # default database and user
         db, user = 'opentable', 'isdb'
-        # you may have to adjust the user 
-        # python a4-socnet-sraja.py a4_socnet postgres
         if len(sys.argv) >= 2:
             db = sys.argv[1]
         if len(sys.argv) >= 3:
             user = sys.argv[2]
-        # by assigning to conn and cur here they become
-        # global variables.  Hence they are not passed
-        # into the various SQL interface functions
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
