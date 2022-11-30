@@ -8,7 +8,7 @@ import functions.admin_functions as af
 def heading(str):
     print('-'*60)
     print("** %s:" % (str,))
-    print('-'*60, '\n')    
+    print('-'*60, '\n')
 
 SHOW_CMD = True
 def print_cmd(cmd):
@@ -50,8 +50,8 @@ def make_reservation(p_customer_id, p_restaurant_id, p_date, p_time, p_seats, p_
 def cancel_reservation(p_customer_id, p_restaurant_id) :
     cf.cancel_reservation(p_customer_id, p_restaurant_id)
 
-def check_available_hours(p_restaurant_id) :
-    cf.check_available_hours(p_restaurant_id)
+def check_available_hours(p_restaurant_id, p_date, p_time) :
+    cf.check_available_hours(p_restaurant_id, p_date, p_time)
 
 def filter_restaurants(filter_type, filter_value, order, limit) :
     cf.filter_restaurants(filter_type, filter_value, order, limit)
