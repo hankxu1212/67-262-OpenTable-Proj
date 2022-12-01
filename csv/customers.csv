@@ -1,4 +1,4 @@
-customer_id,loyalty_pts
+user_id,loyalty_points,preferred_restaurant,preferred_cuisine,customer_id,loyalty_pts
 1,1000
 2,2000
 3,3200

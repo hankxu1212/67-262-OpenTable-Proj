@@ -16,16 +16,16 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
-# def new_reservation_menu():
-#     heading("New_Reservation")
-#     date = input('Date (e.g. 2023-02-12): ')
-#     time = input('Time (e.g. 14:00): ')
-#     seats = input('Seats (e.g. 3): ')
-#     info = input('Additional Information: (e.g. Anniversary)')
-#     cust_id = input('Customer_Id (e.g. 4): ')
-#     rest_id = input('Restaurant_id (e.g. 12): ')
-#     make_reservation(date=date, time=time, seats=seats, info=info, cust_id=cust_id, rest_id=rest_id)
-#     show_all_reservations()
+def new_reservation_menu():
+    heading("New_Reservation")
+    date = input('Date (e.g. 2023-02-12): ')
+    time = input('Time (e.g. 14:00): ')
+    seats = input('Seats (e.g. 3): ')
+    info = input('Additional Information: (e.g. Anniversary)')
+    cust_id = input('Customer_Id (e.g. 4): ')
+    rest_id = input('Restaurant_id (e.g. 12): ')
+    make_reservation(date=date, time=time, seats=seats, info=info, cust_id=cust_id, rest_id=rest_id)
+    show_all_reservations()
 
 def make_reservation(date, time, seats, info, cust_id, rest_id) :
     tmpl = '''
