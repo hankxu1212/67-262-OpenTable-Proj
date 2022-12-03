@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-11-29 19:14:28.699
+-- Last modification date: 2022-12-03 19:08:17.301
 
 -- tables
 -- Table: Customers
@@ -11,14 +11,13 @@ CREATE TABLE Customers (
 
 -- Table: Reservations
 CREATE TABLE Reservations (
-    reserve_id serial  NOT NULL,
     date date  NOT NULL,
     time time  NOT NULL,
     seats int  NOT NULL,
-    additional_requests text NOT NULL,
+    additional_requests text  NOT NULL,
     customer_id int  NOT NULL,
     restaurant_id int  NOT NULL,
-    CONSTRAINT Reservations_pk PRIMARY KEY (reserve_id)
+    CONSTRAINT Reservations_pk PRIMARY KEY (customer_id,restaurant_id,date)
 );
 
 -- Table: Restaurants
@@ -26,7 +25,8 @@ CREATE TABLE Restaurants (
     restaurant_id int  NOT NULL,
     location text  NOT NULL,
     menu text  NOT NULL,
-    hours text  NOT NULL,
+    open_hour time  NOT NULL,
+    close_hour time  NOT NULL,
     CONSTRAINT Restaurants_pk PRIMARY KEY (restaurant_id)
 );
 

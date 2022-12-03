@@ -10,4 +10,4 @@ CREATE database opentable;
 
 \copy Customers(customer_id, loyalty_pts) FROM csv/customers.csv csv header;
 
-\copy Restaurants(restaurant_id, location, menu, hours) FROM csv/restaurants.csv csv header;
+\copy Restaurants(restaurant_id, location, menu, open_hour, close_hour) FROM csv/restaurants.csv csv header;

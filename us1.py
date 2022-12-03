@@ -27,7 +27,7 @@ def new_reservation_menu():
     make_reservation(date=date, time=time, seats=seats, info=info, cust_id=cust_id, rest_id=rest_id)
     show_all_reservations()
 
-def make_reservation(date, time, seats, info, cust_id, rest_id) :
+def make_reservation(date, time, seats, info, cust_id, rest_id, cur) :
     tmpl = '''
         INSERT INTO Reservations(date, time, seats, additional_requests, customer_id, restaurant_id)
             VALUES(%s, %s, %s, %s, %s, %s)
@@ -36,7 +36,7 @@ def make_reservation(date, time, seats, info, cust_id, rest_id) :
     print_cmd(cmd)
     cur.execute(cmd)
 
-def show_all_reservations() :
+def show_all_reservations(cur) :
     tmpl = '''
         SELECT c.name, t.name, r.date, r.time, r.seats, r.additional_requests
           FROM Users as c 
@@ -61,9 +61,9 @@ if __name__ == '__main__':
         conn.autocommit = True
         cur = conn.cursor()
         print('Showing table: Reservations ----------------- Before: ---------------------------')
-        show_all_reservations()
-        make_reservation('2023-1-1', '14:00', 3, "Anniversary", 4, 13)
+        show_all_reservations(cur)
+        make_reservation('2023-1-1', '14:00', 3, "Anniversary", 4, 13, cur)
         print('Showing table: Reservations ----------------- After: ----------------------------')
-        show_all_reservations()
+        show_all_reservations(cur)
     except psycopg2.Error as e:
         print("Unable to open connection: %s" % (e,))
