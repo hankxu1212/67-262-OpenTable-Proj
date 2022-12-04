@@ -1,5 +1,5 @@
-review_id, comment, rating, customer_id, restaurant_id
-1,NICE,9,14,32
+review_id, comment, rating, posted_by, posted_to
+1,NICE,9,4,32
 2,BAD,0,3,12
 3,terrible,1, 4,33
 4,super good!,10,5,33
