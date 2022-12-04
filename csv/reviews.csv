@@ -1,0 +1,11 @@
+review_id, comment, rating, customer_id, restaurant_id
+1,NICE,9,14,32
+2,BAD,0,3,12
+3,terrible,1, 4,33
+4,super good!,10,5,33
+5,wow fantastic,10,6,33
+6,amazing,9,7,33
+7,mediocore,5,8,32
+8,meh,4,1,32
+9,i mean its alright,6,25,12
+10, not bad,7,27,12
