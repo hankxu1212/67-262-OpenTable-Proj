@@ -17,5 +17,5 @@ restaurant_id,location,menu,open_hour,close_hour
 36,Atlanta,lobsters,10:00,14:30
 37,Somalia,shrimp,6:00,20:00
 38,Victoria,dark magic,8:00,12:00
-39,Vancouver,clash of clans,8:00 - 19:30,19:30
-40,Seattle,genshin,18:30 - 19:00,19:00
+39,Vancouver,clash of clans,8:00,19:30
+40,Seattle,genshin,18:30,19:00
