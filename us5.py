@@ -18,12 +18,50 @@ def print_rows(rows):
 
 def recommend_customers(cust_id) :
     tmpl = '''
-    DELETE FROM Reservations
-           WHERE customer_id = %s AND restaurant_id = %s AND date = %s
+    CREATE VIEW tmp_reservations AS
+        SELECT restaurant_id
+          FROM reservations
+         WHERE customer_id = %s;
+
+    CREATE VIEW cuisines_rank AS
+        SELECT c.cuisine_name, count(r.restaurant_id) as cnt
+          FROM cuisines AS c
+               JOIN labels AS l ON l.cuisine_name = c.cuisine_name
+               JOIN tmp_reservations as r ON l.restaurant_id = r.restaurant_id
+      GROUP BY c.cuisine_name
+      ORDER BY cnt DESC;
+    
+    CREATE VIEW ratings AS
+        SELECT l.restaurant_id, avg(r.rating) as avg
+          FROM reviews AS r
+               JOIN labels AS l ON r.posted_to = l.restaurant_id
+               JOIN cuisines_rank as c ON l.cuisine_name = (SELECT c2.cuisine_name 
+                                                              FROM cuisines_rank as c2
+                                                             LIMIT 1)
+      GROUP BY l.restaurant_id
+      ORDER BY avg DESC;
+
+    UPDATE customers
+       SET recommendations = (SELECT r.restaurant_id
+                                FROM ratings as r
+                               LIMIT 1)
+     WHERE customer_id = %s;
     '''
-    cmd = cur.mogrify(tmpl, (cust_id, rest_id, date))
+    cmd = cur.mogrify(tmpl, (cust_id, cust_id))
     print_cmd(cmd)
     cur.execute(cmd)
+
+def show() :
+    tmpl = '''
+        SELECT *
+          FROM customers
+    '''
+    cmd = cur.mogrify(tmpl)
+    print_cmd(cmd)
+    cur.execute(cmd)
+    rows = cur.fetchall()
+    print_rows(rows)
+    print()
 
 if __name__ == '__main__':
     try:
@@ -36,9 +74,11 @@ if __name__ == '__main__':
         conn.autocommit = True
         cur = conn.cursor()
 
-        print('Showing table: Reservations ----------------- Before: ---------------------------')
-        recommend_customers(1)
+        print('Showing table: Customers ----------------- Before: ---------------------------')
+        show()
+        recommend_customers(5)
         print('Showing table: Reservations ----------------- After: ----------------------------')
+        show()
         
     except psycopg2.Error as e:
         print("Unable to open connection: %s" % (e,))
