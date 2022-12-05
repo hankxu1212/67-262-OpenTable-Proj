@@ -77,7 +77,7 @@ if __name__ == '__main__':
         print('Showing table: Customers ----------------- Before: ---------------------------')
         show()
         recommend_customers(5)
-        print('Showing table: Reservations ----------------- After: ----------------------------')
+        print('Showing table: Customers ----------------- After: ----------------------------')
         show()
         
     except psycopg2.Error as e:

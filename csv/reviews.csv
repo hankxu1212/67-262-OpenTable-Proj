@@ -1,6 +1,6 @@
 review_id, comment, rating, posted_by, posted_to
 1,NICE,9,4,32
-2,BAD,0,3,12
+2,BAD,1,3,12
 3,terrible,1, 4,33
 4,super good!,10,5,39
 5,wow fantastic,10,6,39
@@ -8,4 +8,5 @@ review_id, comment, rating, posted_by, posted_to
 7,mediocore,5,8,32
 8,meh,4,1,32
 9,i mean its alright,6,25,12
-10, not bad,7,27,12
+10,not bad,7,27,12
+11,disappointed,1,6,32
