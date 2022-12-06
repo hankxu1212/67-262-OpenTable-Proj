@@ -66,7 +66,7 @@ if __name__ == '__main__':
         make_reservation('2023-1-12', '18:00', 2, "Birthday", cust_id, rest_id)
         print('Showing table: Reservations ----------------- Before: ---------------------------')
         show_all_reservations()
-        print("Canceling Sam's reservation at Primanti Bros on 2023-1-12")
+        print("Canceling Sam's reservation at Eat'n Park on 2023-1-12")
         cancel_reservation(cust_id, rest_id, date)
         print('Showing table: Reservations ----------------- After: ----------------------------')
         show_all_reservations()
