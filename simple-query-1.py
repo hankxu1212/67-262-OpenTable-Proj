@@ -49,6 +49,8 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
+        print('User Story #1')
+        print('This user story makes a reservation for the specified user.')
         print('Showing table: Reservations ----------------- Before: ---------------------------')
         show_all_reservations()
         print('Inserting a reservation for Jill at Red Robin')

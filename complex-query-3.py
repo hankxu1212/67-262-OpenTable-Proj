@@ -79,6 +79,11 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
+        print('User Story #3')
+        print('''This user story finds the available reservations within two 
+                 hours of the specified time at the specified restaurant on the
+                 specified date, assuming that a restaurant can only have two
+                 reservations every half an hour.''')
         print('Showing Available Reservations within 2 hours')
         check_available_reservations(18, '2023-1-1', '18:00')
 

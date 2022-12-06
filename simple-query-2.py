@@ -58,6 +58,8 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
+        print('User Story #2')
+        print('This user story cancels a reservation for the specified user.')
         cust_id = 9
         rest_id = 19
         date = '2023-1-12'

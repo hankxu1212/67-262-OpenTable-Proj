@@ -110,6 +110,9 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
+        print('User Story #4')
+        print('''This user story automatically implements a reservation from the
+                 waitlist when a relevant cancellation has occurred.''')
         remove_from_waitlist()
         print('Showing table: Waitlists ----------------- Before: ---------------------------')
         show_waitlist()
