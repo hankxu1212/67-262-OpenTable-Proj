@@ -84,9 +84,9 @@ if __name__ == '__main__':
                  hours of the specified time at the specified restaurant on the
                  specified date, assuming that a restaurant can only have two
                  reservations every half an hour.''')
-        print('Showing Available Reservations within 2 hours')
+        print('Showing Available Reservations within 2 hours of 18:00:')
+        print('Note: Since 17:30 is booked, it is not in the list.')
         check_available_reservations(18, '2023-1-1', '18:00')
-
 
     except psycopg2.Error as e:
         print("Unable to open connection: %s" % (e,))

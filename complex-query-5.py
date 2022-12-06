@@ -16,6 +16,8 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
+# REQUIRES: a valid customer_id
+# ENSURES: UPDATES customer.recommendations -> the highest rated restaurant with customer's favorate cuisine
 def recommend_customers(cust_id) :
     tmpl = '''
     CREATE VIEW tmp_reservations AS

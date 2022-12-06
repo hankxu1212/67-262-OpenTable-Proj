@@ -16,6 +16,9 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
+# REQUIRES: void
+# ENSURES: a list of cuisines, ordered by the number of reservations corresponding 
+# to that cuisine in descending order
 def rank_cuisines() :
     tmpl = '''
         SELECT c.cuisine_name, count(r.customer_id)
