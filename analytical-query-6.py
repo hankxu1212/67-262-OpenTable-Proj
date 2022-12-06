@@ -16,12 +16,14 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
+# REQUIRES: void
+# ENSURES: a list of months ordered by the number of reservations made in that month in descending order
 def rank_months() :
     tmpl = '''
         SELECT EXTRACT(MONTH FROM date) AS month, COUNT(customer_id) AS TotalCount
           FROM reservations
          GROUP BY EXTRACT(MONTH FROM date)
-         ORDER BY EXTRACT(MONTH FROM date)
+         ORDER BY TotalCount DESC
     '''
     cmd = cur.mogrify(tmpl)
     print_cmd(cmd)

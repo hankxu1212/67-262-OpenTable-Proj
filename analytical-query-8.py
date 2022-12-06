@@ -16,6 +16,9 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
+# REQUIRES: void
+# ENSURES: A list of 10 restaurants, ordered by percentage of one-star 
+#          reviews they recieve in descending order
 def rank_restaurants() :
     tmpl = '''
         CREATE VIEW one_star AS

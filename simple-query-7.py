@@ -16,6 +16,8 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
+# REQUIRES: valid inputs with correct types
+# ENSURES: updated restaurant table with the new information
 def update_info(rest_id, p_location, p_menu, p_open_hour, p_close_hour) :
     tmpl = '''
         UPDATE restaurants
