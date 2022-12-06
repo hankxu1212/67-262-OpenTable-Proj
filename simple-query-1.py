@@ -62,6 +62,7 @@ if __name__ == '__main__':
         cur = conn.cursor()
         print('Showing table: Reservations ----------------- Before: ---------------------------')
         show_all_reservations()
+        print('Inserting a reservation for Jill at Red Robin')
         make_reservation('2023-1-1', '14:00', 3, "Anniversary", 4, 13)
         print('Showing table: Reservations ----------------- After: ----------------------------')
         show_all_reservations()

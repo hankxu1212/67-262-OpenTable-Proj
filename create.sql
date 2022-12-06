@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2022-12-04 19:39:36.338
+-- Last modification date: 2022-12-05 23:53:09.346
 
 -- tables
 -- Table: Customers
@@ -72,7 +72,8 @@ CREATE TABLE waitlists (
     time time  NOT NULL,
     seats int  NOT NULL,
     entry_time timestamp  NOT NULL DEFAULT LOCALTIMESTAMP(0),
-    CONSTRAINT waitlists_pk PRIMARY KEY (customer_id,restaurant_id)
+    add_requests text  NULL,
+    CONSTRAINT waitlists_pk PRIMARY KEY (customer_id,restaurant_id,date)
 );
 
 -- foreign keys

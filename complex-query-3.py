@@ -79,7 +79,7 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
-        print('Showing Available Reservations')
+        print('Showing Available Reservations within 2 hours')
         check_available_reservations(18, '2023-1-1', '18:00')
 
 

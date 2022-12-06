@@ -20,4 +20,4 @@ CREATE database opentable;
 
 \copy Labels(restaurant_id, cuisine_name) FROM csv/labels.csv csv header;
 
-\copy Waitlists(customer_id, restaurant_id, date, time, seats, entry_time) FROM csv/waitlists.csv csv header;
+\copy Waitlists(customer_id, restaurant_id, date, time, seats, entry_time, add_requests) FROM csv/waitlists.csv csv header;
