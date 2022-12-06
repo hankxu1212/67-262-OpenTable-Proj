@@ -16,89 +16,38 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
-def show_all_reservations() :
-    tmpl = '''
-        SELECT c.name, t.name, r.date, r.time, r.seats, r.additional_requests
-          FROM Users as c 
-               JOIN Reservations as r ON c.user_id = r.customer_id
-               JOIN Users as t ON r.restaurant_id = t.user_id
-    '''
-    cmd = cur.mogrify(tmpl)
+# REQUIRES: filter_type is either "rating" or "cuisine".
+# -- IF filter_type = rating, arg1 is the lowerbound for the 
+# -- restaurant's average rating, and arg2 is the upperbound
+# ----- ENSURES: returns all restaurants with rating arg1 <= r <= arg2
+# -- IF filter_type = cuisine, arg1 and arg2 are both cuisine names
+# ----- ENSURES: return all restaurants labeled either arg1 OR arg2
+def filter_restaurants(filter_type, arg1, arg2) :
+    tmpl = ''
+    if(filter_type == 'rating') :
+        tmpl = '''
+            SELECT u.user_id, u.name, avg(r.rating) as avg
+              FROM reviews as r
+                   JOIN users as u ON r.posted_to = u.user_id
+             GROUP BY u.user_id, u.name
+            HAVING avg(r.rating) >= %s AND avg(r.rating) <= %s;
+        '''
+    elif(filter_type == 'cuisine') :
+        tmpl = '''
+            SELECT u.user_id, u.name
+              FROM users as u
+                   JOIN labels as l ON u.user_id = l.restaurant_id
+             WHERE l.cuisine_name = %s OR l.cuisine_name = %s
+        '''
+    else :
+        print('Exception: filter type invalid. Please enter : rating/cuisine, followed by value')
+        return
+    cmd = cur.mogrify(tmpl, (arg1, arg2))
     print_cmd(cmd)
     cur.execute(cmd)
     rows = cur.fetchall()
     print_rows(rows)
     print()
-
-def cancel_reservation(cust_id, rest_id, date) :
-    tmpl = '''
-    DELETE FROM Reservations
-           WHERE customer_id = %s AND restaurant_id = %s AND date = %s
-    '''
-    cmd = cur.mogrify(tmpl, (cust_id, rest_id, date))
-    print_cmd(cmd)
-    cur.execute(cmd)
-
-def remove_from_waitlist() :
-    tmpl = '''
-    CREATE OR REPLACE FUNCTION fn_remove_from_waitlist()
-    RETURNS trigger
-    LANGUAGE plpgsql AS
-    $$
-    DECLARE waitlist_cust integer;
-    DECLARE num_seats integer;
-    DECLARE add_info text;
-    BEGIN
-    waitlist_cust = (SELECT customer_id
-                       FROM Waitlists
-                      WHERE restaurant_id = old.restaurant_id AND
-                            date = old.date AND 
-                            time = old.time
-                      ORDER BY entry_time ASC
-                      LIMIT 1);
-    IF waitlist_cust IS NOT NULL
-        THEN num_seats = (SELECT seats
-                            FROM Waitlists
-                           WHERE restaurant_id = old.restaurant_id AND
-                                 date = old.date AND 
-                                 customer_id = waitlist_cust);
-             add_info = (SELECT add_requests
-                           FROM Waitlists
-                          WHERE restaurant_id = old.restaurant_id AND
-                                date = old.date AND 
-                                customer_id = waitlist_cust);
-             INSERT INTO Reservations(date, time, seats, customer_id, restaurant_id)
-                         VALUES(old.date, old.time, num_seats, waitlist_cust, old.restaurant_id);
-             DELETE FROM Waitlists
-                    WHERE customer_id = waitlist_cust AND 
-                          date = old.date AND
-                          restaurant_id = old.restaurant_id;
-    END IF;
-    RETURN null;
-    END;
-    $$;
-
-    CREATE OR REPLACE TRIGGER tr_remove_from_waitlist
-    AFTER DELETE OR UPDATE ON Reservations
-    FOR EACH ROW
-    EXECUTE FUNCTION fn_remove_from_waitlist();
-    '''
-    cmd = cur.mogrify(tmpl)
-    print_cmd(cmd)
-    cur.execute(cmd)
-
-def show_waitlist() :
-    tmpl = '''
-    SELECT * 
-      FROM Waitlists
-    '''
-    cmd = cur.mogrify(tmpl)
-    print_cmd(cmd)
-    cur.execute(cmd)
-    rows = cur.fetchall()
-    print_rows(rows)
-    print()
-
 
 if __name__ == '__main__':
     try:
@@ -110,21 +59,21 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
-        print('User Story #4')
-        print('''This user story automatically implements a reservation from the
-                 waitlist when a relevant cancellation has occurred.''')
-        remove_from_waitlist()
-        print('Showing table: Waitlists ----------------- Before: ---------------------------')
-        show_waitlist()
-        print('Showing table: Reservations ----------------- Before: ---------------------------')
-        show_all_reservations()
-        print("Canceling Fred's reservation at Red Lobster on 2023-1-5")
-        cancel_reservation(6, 15, '2023-1-5')
-        print("Adding Sam's reservation from the waitlist")
-        print('Showing table: Waitlists ----------------- After: ---------------------------')
-        show_waitlist()
-        print('Showing table: Reservations ----------------- After: ---------------------------')
-        show_all_reservations()
- 
+
+        print('''User story 9:
+                 REQUIRES: filter_type is either "rating" or "cuisine".
+                 -- IF filter_type = rating, arg1 is the lowerbound for the 
+                 -- restaurant's average rating, and arg2 is the upperbound
+                 ----- ENSURES: returns all restaurants with rating arg1 <= r <= arg2
+                 -- IF filter_type = cuisine, arg1 and arg2 are both cuisine names
+                 ----- ENSURES: return all restaurants labeled either arg1 OR arg2''')
+        
+        print("PRINTING all restaurants with rating between 4 and 10")
+        filter_restaurants('rating', '4', '10')
+        print("PRINTING all Japanese or Chinese restaurants")
+        filter_restaurants('cuisine', 'Japanese', 'Chinese')
+        print("**** The following command will raise an error:")
+        filter_restaurants('garbage', '??', 'rand(2)')
+        
     except psycopg2.Error as e:
         print("Unable to open connection: %s" % (e,))

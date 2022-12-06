@@ -16,58 +16,54 @@ def print_rows(rows):
     for row in rows:
         print(row)
 
-def check_available_reservations(rest_id, date, time) :
+# REQUIRES: a valid customer_id
+# ENSURES: UPDATES customer.recommendations -> the highest rated restaurant with customer's favorate cuisine
+def recommend_customers(cust_id) :
     tmpl = '''
-    CREATE or REPLACE function check_reservations (p_rest_id integer, p_date date, p_time time)
-    RETURNS void
-    language plpgsql as
-    $$
-    DECLARE check_time time = p_time - interval '2 hours';
-    DECLARE end_time time = check_time + interval '4.5 hours';
-    BEGIN
+    CREATE VIEW tmp_reservations AS
+        SELECT restaurant_id
+          FROM reservations
+         WHERE customer_id = %s;
 
-    DROP Table IF EXISTS Available_Times;
-    DROP Table IF EXISTS Unavailable_Times;
+    CREATE VIEW cuisines_rank AS
+        SELECT c.cuisine_name, count(r.restaurant_id) as cnt
+          FROM cuisines AS c
+               JOIN labels AS l ON l.cuisine_name = c.cuisine_name
+               JOIN tmp_reservations as r ON l.restaurant_id = r.restaurant_id
+      GROUP BY c.cuisine_name
+      ORDER BY cnt DESC;
+    
+    CREATE VIEW ratings AS
+        SELECT l.restaurant_id, avg(r.rating) as avg
+          FROM reviews AS r
+               JOIN labels AS l ON r.posted_to = l.restaurant_id
+               JOIN cuisines_rank as c ON l.cuisine_name = (SELECT c2.cuisine_name 
+                                                              FROM cuisines_rank as c2
+                                                             LIMIT 1)
+      GROUP BY l.restaurant_id
+      ORDER BY avg DESC;
 
-    CREATE Table Available_Times AS
-        (SELECT time
-           FROM Reservations
-          WHERE restaurant_id = p_rest_id AND date = p_date
-          GROUP BY time, date
-         HAVING count(customer_id) < 2);
-
-    CREATE Table Unavailable_Times AS
-        (SELECT time
-           FROM Reservations
-          WHERE restaurant_id = p_rest_id AND date = p_date
-          GROUP BY time, date
-         HAVING count(customer_id) >= 2);
-
-    LOOP 
-    EXIT WHEN check_time = end_time;
-        IF check_time NOT IN (SELECT time
-                                From Available_Times) AND
-           check_time NOT IN (SELECT time
-                                FROM Unavailable_Times)
-            THEN INSERT INTO Available_Times(time)
-                    VALUES(check_time);
-        END IF;
-        check_time = check_time + interval '.5 hours';
-    END LOOP;
-    END;
-    $$;
-    SELECT check_reservations(%s, %s, %s);
-    SELECT time
-      FROM Available_Times
-     ORDER BY time ASC;
+    UPDATE customers
+       SET recommendations = (SELECT r.restaurant_id
+                                FROM ratings as r
+                               LIMIT 1)
+     WHERE customer_id = %s;
     '''
-    cmd = cur.mogrify(tmpl, (rest_id, date, time))
+    cmd = cur.mogrify(tmpl, (cust_id, cust_id))
+    print_cmd(cmd)
+    cur.execute(cmd)
+
+def show() :
+    tmpl = '''
+        SELECT *
+          FROM customers
+    '''
+    cmd = cur.mogrify(tmpl)
     print_cmd(cmd)
     cur.execute(cmd)
     rows = cur.fetchall()
     print_rows(rows)
     print()
-
 
 if __name__ == '__main__':
     try:
@@ -79,14 +75,16 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
-        print('User Story #3')
-        print('''This user story finds the available reservations within two 
-                 hours of the specified time at the specified restaurant on the
-                 specified date, assuming that a restaurant can only have two
-                 reservations every half an hour.''')
-        print('Showing Available Reservations within 2 hours of 18:00:')
-        print('Note: Since 17:30 is booked, it is not in the list.')
-        check_available_reservations(18, '2023-1-1', '18:00')
 
+        print('''User story #5:
+                 REQUIRES: a valid customer_id
+                 ENSURES: UPDATES/OVERWRITES customer.recommendations -> the highest 
+                          rated restaurant with customer's favorate cuisine''')
+        print('Showing table: Customers ----------------- Before: ---------------------------')
+        show()
+        recommend_customers(5)
+        print('Showing table: Customers ----------------- After: ----------------------------')
+        show()
+        
     except psycopg2.Error as e:
         print("Unable to open connection: %s" % (e,))

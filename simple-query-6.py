@@ -45,7 +45,10 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
-
+        print('''User story 10:
+                 REQUIRES: void
+                 ENSURES: a list of cuisines, ordered by the number of reservations corresponding 
+                          to that cuisine in descending order''')
         rank_cuisines()
         
     except psycopg2.Error as e:

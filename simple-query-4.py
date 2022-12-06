@@ -56,6 +56,9 @@ if __name__ == '__main__':
 
         print('Showing table: Restaurants ----------------- Before: ---------------------------')
         show()
+        print('''User story 7
+                 REQUIRES: valid inputs with correct types
+                 ENSURES: updated restaurant table with the new information''')
         update_info(13, 'Pacific', 'Gross', '12:00', '13:00')
         print('Showing table: Restaurants ----------------- After: ----------------------------')
         show()
