@@ -60,7 +60,7 @@ if __name__ == '__main__':
         conn.autocommit = True
         cur = conn.cursor()
 
-        print('''User story 9:
+        print('''User story #9:
                  REQUIRES: filter_type is either "rating" or "cuisine".
                  -- IF filter_type = rating, arg1 is the lowerbound for the 
                  -- restaurant's average rating, and arg2 is the upperbound

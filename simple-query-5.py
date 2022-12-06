@@ -57,7 +57,7 @@ if __name__ == '__main__':
         conn.autocommit = True
         cur = conn.cursor()
 
-        print('''User story 8
+        print('''User story #8
                  REQUIRES: void
                  ENSURES: A list of 10 restaurants, ordered by percentage of one-star 
                           reviews they recieve in descending order''')

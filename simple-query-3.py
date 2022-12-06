@@ -42,7 +42,7 @@ if __name__ == '__main__':
         conn = psycopg2.connect(database=db, user=user)
         conn.autocommit = True
         cur = conn.cursor()
-        print('''User story 6:
+        print('''User story #6:
                  REQUIRES: void
                  ENSURES: a list of months ordered by the number of 
                           reservations made in that month in descending order''')
