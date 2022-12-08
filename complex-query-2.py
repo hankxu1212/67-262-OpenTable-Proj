@@ -39,54 +39,6 @@ def cancel_reservation(cust_id, rest_id, date) :
     print_cmd(cmd)
     cur.execute(cmd)
 
-def remove_from_waitlist() :
-    tmpl = '''
-    CREATE OR REPLACE FUNCTION fn_remove_from_waitlist()
-    RETURNS trigger
-    LANGUAGE plpgsql AS
-    $$
-    DECLARE waitlist_cust integer;
-    DECLARE num_seats integer;
-    DECLARE add_info text;
-    BEGIN
-    waitlist_cust = (SELECT customer_id
-                       FROM Waitlists
-                      WHERE restaurant_id = old.restaurant_id AND
-                            date = old.date AND 
-                            time = old.time
-                      ORDER BY entry_time ASC
-                      LIMIT 1);
-    IF waitlist_cust IS NOT NULL
-        THEN num_seats = (SELECT seats
-                            FROM Waitlists
-                           WHERE restaurant_id = old.restaurant_id AND
-                                 date = old.date AND 
-                                 customer_id = waitlist_cust);
-             add_info = (SELECT add_requests
-                           FROM Waitlists
-                          WHERE restaurant_id = old.restaurant_id AND
-                                date = old.date AND 
-                                customer_id = waitlist_cust);
-             INSERT INTO Reservations(date, time, seats, customer_id, restaurant_id)
-                         VALUES(old.date, old.time, num_seats, waitlist_cust, old.restaurant_id);
-             DELETE FROM Waitlists
-                    WHERE customer_id = waitlist_cust AND 
-                          date = old.date AND
-                          restaurant_id = old.restaurant_id;
-    END IF;
-    RETURN null;
-    END;
-    $$;
-
-    CREATE OR REPLACE TRIGGER tr_remove_from_waitlist
-    AFTER DELETE OR UPDATE ON Reservations
-    FOR EACH ROW
-    EXECUTE FUNCTION fn_remove_from_waitlist();
-    '''
-    cmd = cur.mogrify(tmpl)
-    print_cmd(cmd)
-    cur.execute(cmd)
-
 def show_waitlist() :
     tmpl = '''
     SELECT * 
@@ -113,7 +65,6 @@ if __name__ == '__main__':
         print('User Story #4')
         print('''This user story automatically implements a reservation from the
                  waitlist when a relevant cancellation has occurred.''')
-        remove_from_waitlist()
         print('Showing table: Waitlists ----------------- Before: ---------------------------')
         show_waitlist()
         print('Showing table: Reservations ----------------- Before: ---------------------------')
