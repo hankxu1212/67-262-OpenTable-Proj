@@ -63,3 +63,42 @@ CREATE OR REPLACE FUNCTION fn_remove_from_waitlist()
     AFTER DELETE OR UPDATE ON Reservations
     FOR EACH ROW
     EXECUTE FUNCTION fn_remove_from_waitlist();
+
+CREATE or REPLACE function check_reservations (p_rest_id integer, p_date date, p_time time)
+    RETURNS void
+    language plpgsql as
+    $$
+    DECLARE check_time time = p_time - interval '2 hours';
+    DECLARE end_time time = check_time + interval '4.5 hours';
+    BEGIN
+
+    DROP Table IF EXISTS Available_Times;
+    DROP Table IF EXISTS Unavailable_Times;
+
+    CREATE Table Available_Times AS
+        (SELECT time
+           FROM Reservations
+          WHERE restaurant_id = p_rest_id AND date = p_date
+          GROUP BY time, date
+         HAVING count(customer_id) < 2);
+
+    CREATE Table Unavailable_Times AS
+        (SELECT time
+           FROM Reservations
+          WHERE restaurant_id = p_rest_id AND date = p_date
+          GROUP BY time, date
+         HAVING count(customer_id) >= 2);
+
+    LOOP 
+    EXIT WHEN check_time = end_time;
+        IF check_time NOT IN (SELECT time
+                                From Available_Times) AND
+           check_time NOT IN (SELECT time
+                                FROM Unavailable_Times)
+            THEN INSERT INTO Available_Times(time)
+                    VALUES(check_time);
+        END IF;
+        check_time = check_time + interval '.5 hours';
+    END LOOP;
+    END;
+    $$;
